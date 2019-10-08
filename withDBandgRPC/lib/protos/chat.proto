@@ -1,0 +1,56 @@
+syntax = "proto3";
+package chat;
+
+
+message Response{
+    int32 status = 1;
+    string message = 2;
+}
+
+message JoinRequest{
+    string name = 1;
+}
+
+message JoinResponse{
+   Response response = 1;
+}
+
+message GetUser{
+    int32 nothing = 1;
+}
+
+message SendUser{      // response of GetUser
+    repeated string user = 1;
+}
+message SendRequest{        // send message
+    string from    = 1;
+    string to      = 2;
+    string message = 3;
+}
+message Result{
+    int32   id     = 1;
+    string from    = 2;
+    string to      = 3;
+    string message = 4;
+    string time    = 5;
+}
+message SendResponse{       //  response of send message
+    Response response = 1;
+    Result   result = 2;
+}
+
+message GetMessages{     // get message of 
+    string user = 1;
+}
+message SendMessages{     // response of get message of
+    Response response = 1;
+    repeated Result message = 2;
+}
+
+
+service Chat{
+    rpc Join  (JoinRequest) returns (JoinResponse);
+    rpc Users (GetUser) returns (SendUser);
+    rpc Message (GetMessages) returns (SendMessages);
+    rpc Send (SendRequest) returns (SendResponse);
+}
